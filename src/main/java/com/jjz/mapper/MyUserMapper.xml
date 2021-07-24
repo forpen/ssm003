@@ -1,0 +1,11 @@
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jjz.dao.MyUserDao">
+    <select id="selectUserByUname" resultType="com.jjz.pojo.MyUser" parameterType="com.jjz.pojo.MyUser">
+        select * from myuser where 1=1
+        <if test="uname1=null and uname!=''">
+            and uname like concat(#{uname},'%')
+        </if>
+    </select>
+</mapper>

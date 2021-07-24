@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd http://www.springframework.org/schema/context https://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--数据源配置-->
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource">
+        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
+        <property name="url" value="jdbc:mysql://localhost:3306/ssm01?useSSL=false&amp;allowPublicKeyRetrieval=true&amp;serverTimezone=UTC"/>
+        <property name="username" value="root"/>
+        <property name="password" value="xiaohaogeige"/>
+    </bean>
+    <!--事务配置-->
+    <bean id="txManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+    <!--事务启动（开启事务注解）-->
+    <tx:annotation-driven transaction-manager="txManager"/>
+    <!--配置mybatis工厂，指定数据源，并与mybatis整合-->
+    <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+        <property name="dataSource" ref="dataSource"/>
+        <property name="configLocation" value="classpath:src/main/resources/mybatis/mybatis-config.xml"/>
+    </bean>
+    <!-- mapper代理开发，使用spring自动扫描mybaits接口（spring将指定包中所用被@mapper注解标注的接口自动装配weimybatis的映射接口）-->
+    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+        <!--mybatis-spring组件的扫描器-->
+        <property name="basePackage" value="com.jjz.dao"/>
+        <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory"/>
+    </bean>
+    <!--扫描包的设计，注解生效，注意：dao包已被mybatis-spring组件扫描，此处无需再扫描-->
+    <context:component-scan base-package="com.jjz.service"/>
+</beans>
