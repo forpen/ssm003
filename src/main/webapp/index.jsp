@@ -12,7 +12,7 @@
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/select" method="post">
-    输入用户名：<input type="text" name="uname"/><br/>
+    请输入用户名：<input type="text" name="uname"/><br/>
     <input type="submit" value="查询"/>
 </form>
 </body>
